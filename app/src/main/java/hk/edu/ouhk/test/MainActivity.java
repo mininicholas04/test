@@ -28,19 +28,39 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         text = findViewById(R.id.textView);
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
-        sensorManager.registerListener(MainActivity.this,sensor,sensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(MainActivity.this,sensor,sensorManager.SENSOR_DELAY_FASTEST);
         tilting = findViewById(R.id.tilting);
         //Intent intent = new Intent(this, LivePreviewActivity.class);
         //startActivity(intent);
         //finish();
+        new Thread(new Runnable(){
+            public void run(){
+                while(true){
+                    if(pass){
+                        Log.v("aaaaaaaaaaaaaa","passsssssssssssssss");
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        if(pass){
+                            Log.v("aaaaaaaaaaaaaa","passsssssssssssssss");
+                            startActivity(new Intent(MainActivity.this,MainActivity2.class));
+                            finish();
+                            break;
+                    }
 
+                    }
+                }
+            }
+        }).start();
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
         float x = event.values[2] ;
         text.setText(""+x);
-        if( 0.57<= x && x <= 0.62){
+        if( 0.59<= x && x <= 0.62){
             tilting.setBackgroundColor(Color.GREEN);
             long nowMillis = System.currentTimeMillis();
             pass = true;
